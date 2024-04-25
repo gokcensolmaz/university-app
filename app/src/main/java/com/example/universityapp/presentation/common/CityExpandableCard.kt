@@ -3,14 +3,10 @@ package com.example.universityapp.presentation.common
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -25,10 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.universityapp.domain.model.City
-import com.example.universityapp.domain.model.University
+import com.example.universityapp.data.local.University
+import com.example.universityapp.presentation.home.AddRemoveFavoriteEvent
 import com.example.universityapp.ui.theme.Shapes
 import com.example.universityapp.ui.theme.Typography
 import com.example.universityapp.util.Constants.EXPANSION_ANIMATION_DURATION
@@ -38,7 +34,8 @@ import com.example.universityapp.util.Constants.SmallPadding
 @Composable
 fun CityExpandableCard(
     city: City,
-    expanded: Boolean
+    expanded: Boolean,
+    event: (AddRemoveFavoriteEvent) -> Unit
 ) {
     var expandedState by remember { mutableStateOf(expanded) }
     Card(
@@ -91,16 +88,16 @@ fun CityExpandableCard(
                 )
             }
             if (expandedState) {
-                    city.universities.forEach{university ->
-                        UniversityExpandableCard(university = university, expanded = false)
-                    }
-
-
+                city.universities.forEach { university ->
+                    UniversityExpandableCard(
+                        university = university,
+                        expanded = false,
+                        onFavoriteClick = {event(AddRemoveFavoriteEvent.UpsertDeleteUniversity(university = university))}
+                        )
+                }
             }
         }
-
     }
-
 }
 
 
@@ -124,5 +121,5 @@ fun CityExpandableRowPreview() {
             )
         ),
         expanded = false
-    )
+    ){}
 }

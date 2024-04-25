@@ -1,6 +1,7 @@
 package com.example.universityapp.presentation.common
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -14,14 +15,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,7 +41,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.universityapp.domain.model.ContactInfo
-import com.example.universityapp.domain.model.University
+import com.example.universityapp.data.local.University
 import com.example.universityapp.ui.theme.Shapes
 import com.example.universityapp.ui.theme.Typography
 import com.example.universityapp.util.Constants
@@ -51,13 +50,16 @@ import com.example.universityapp.util.Constants.SmallPadding
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UniversityExpandableCard(
-    university: University, expanded: Boolean
+    university: University,
+    expanded: Boolean,
+    onFavoriteClick: (University) -> Unit
 ) {
     var expandedState by remember { mutableStateOf(expanded) }
-    var hasInformation = hasInformation(university)
+    val hasInformation = hasInformation(university)
     var favoriteState by remember {
-        mutableStateOf(false)// TODO: Change it for RoomDB
+        mutableStateOf(false)
     }
+
     Card(modifier = Modifier
         .fillMaxWidth()
         .animateContentSize(
@@ -71,7 +73,7 @@ fun UniversityExpandableCard(
         }
     }) {
         Column(
-            modifier = Modifier.padding(Constants.SmallPadding)
+            modifier = Modifier.padding(SmallPadding)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -107,7 +109,9 @@ fun UniversityExpandableCard(
 
 
                 }
-                IconButton(onClick = { favoriteState = !favoriteState }) {
+                IconButton(onClick = {
+                    onFavoriteClick(university)
+                }) {
                     if (favoriteState) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
@@ -143,7 +147,7 @@ fun UniversityExpandableCard(
                                             onClick = {
                                                 val intent = Intent(Intent.ACTION_DIAL).apply {
                                                     data =
-                                                        android.net.Uri.parse("tel:${element.value}")
+                                                        Uri.parse("tel:${element.value}")
                                                 }
                                                 context.startActivity(intent)
                                             }
@@ -158,7 +162,7 @@ fun UniversityExpandableCard(
                                             onClick = {
                                                 val intent = Intent(Intent.ACTION_SENDTO).apply {
                                                     data =
-                                                        android.net.Uri.parse("mailto:${element.value}")
+                                                        Uri.parse("mailto:${element.value}")
                                                 }
                                                 context.startActivity(intent)
                                             }
@@ -180,6 +184,7 @@ fun UniversityExpandableCard(
     }
 
 }
+
 
 @Composable
 fun HyperlinkText(text: String, hyperlinkText: String, onClick: () -> Unit) {
@@ -238,5 +243,6 @@ fun uniCardPrev() {
             adress = "Gültepe Mahallesi, Çatalan Caddesi No:201/5 01250 Sarıçam/ADANA",
             rector = "MEHMET TÜMAY"
         ), expanded = false
-    )
+    ) {
+    }
 }

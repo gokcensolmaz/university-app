@@ -1,4 +1,4 @@
-package com.example.universityapp.data.remote
+package com.example.universityapp.data.remote.response
 
 import com.example.universityapp.domain.model.City
 

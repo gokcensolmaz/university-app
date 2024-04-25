@@ -18,6 +18,7 @@ import retrofit2.HttpException
 fun HomeScreen(
     modifier: Modifier,
     cities: LazyPagingItems<City>,
+    event : (AddRemoveFavoriteEvent) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -32,7 +33,7 @@ fun HomeScreen(
             ) {
                 items(count = cities.itemCount) {
                     cities[it]?.let { city ->
-                        CityExpandableCard(city = city, expanded = false)
+                        CityExpandableCard(city = city, expanded = false,event = event)
                     }
                 }
             }

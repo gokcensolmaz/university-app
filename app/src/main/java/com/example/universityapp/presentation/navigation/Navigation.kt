@@ -27,7 +27,8 @@ fun Navigation(modifier: Modifier) {
             val cities = viewModel.cities.collectAsLazyPagingItems()
             HomeScreen(
                 modifier = modifier,
-                cities = cities
+                cities = cities,
+                event = viewModel::onEvent
             )
         }
     }

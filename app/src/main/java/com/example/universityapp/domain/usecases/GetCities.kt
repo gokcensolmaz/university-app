@@ -2,11 +2,11 @@ package com.example.universityapp.domain.usecases
 
 import androidx.paging.PagingData
 import com.example.universityapp.domain.model.City
-import com.example.universityapp.domain.repository.CitiesRepository
+import com.example.universityapp.domain.repository.UniversityAppRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetCities (private val citiesRepository: CitiesRepository){
+class GetCities (private val universityAppRepository: UniversityAppRepository){
     operator fun invoke (pageNumber: Int): Flow<PagingData<City>> {
-        return citiesRepository.getCities(pageNumber= pageNumber)
+        return universityAppRepository.getCities(pageNumber= pageNumber)
     }
 }
