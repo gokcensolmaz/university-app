@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.universityapp.domain.model.City
 import com.example.universityapp.domain.model.University
@@ -35,10 +36,8 @@ import com.example.universityapp.util.Constants.SmallPadding
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityExpandableCard(
-    modifier: Modifier = Modifier,
     city: City,
-    expanded: Boolean,
-    onClickExpanded: () -> Unit
+    expanded: Boolean
 ) {
     var expandedState by remember { mutableStateOf(expanded) }
     Card(
@@ -46,7 +45,7 @@ fun CityExpandableCard(
             .fillMaxWidth()
             .animateContentSize(
                 animationSpec = tween(
-                    delayMillis = EXPANSION_ANIMATION_DURATION,
+                    durationMillis = EXPANSION_ANIMATION_DURATION,
                     easing = LinearOutSlowInEasing
                 )
             ),
@@ -84,22 +83,12 @@ fun CityExpandableCard(
                     text = city.province,
                     style = Typography.labelSmall
                 )
-
-
             }
             if (expandedState) {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(SmallPadding),
-                    contentPadding = PaddingValues(all = SmallPadding)
-                ) {
-                    items(count = city.universities.size) {
-                        UniversityExpandableCard(
-                            modifier = modifier,
-                            university = city.universities[it],
-                            expanded = false
-                        ) {}
-                    }
-                }
+
+                UniversityExpandableCard(university = city.universities[0], expanded = false)
+
+
             }
         }
 
@@ -112,10 +101,9 @@ fun CityExpandableCard(
 @Composable
 fun CityExpandableRowPreview() {
     CityExpandableCard(
-        modifier = Modifier.fillMaxWidth(),
         city = City(
             id = 1,
-            province = "ANKARA",
+            province = "ADANA",
             universities = listOf(
                 University(
                     name = "ADANA BİLİM VE TEKNOLOJİ ÜNİVERSİTESİ",
@@ -128,6 +116,6 @@ fun CityExpandableRowPreview() {
                 )
             )
         ),
-        expanded = true
-    ) {}
+        expanded = false
+    )
 }
