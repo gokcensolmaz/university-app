@@ -16,10 +16,11 @@ import retrofit2.HttpException
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier,
     cities: LazyPagingItems<City>,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         val handlePagingResult = handlePagingResult(cities = cities)

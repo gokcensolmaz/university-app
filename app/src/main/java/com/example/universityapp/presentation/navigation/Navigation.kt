@@ -16,19 +16,20 @@ import com.example.universityapp.presentation.home.HomeViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Navigation() {
+fun Navigation(modifier: Modifier) {
     val navController = rememberNavController()
     val backstackState = navController.currentBackStackEntryAsState().value
 
-    Scaffold(modifier = Modifier.fillMaxSize()){
-        NavHost(navController = navController, startDestination = Destination.HomeScreen.route ){
-            composable(Destination.HomeScreen.route) {
-                val viewModel: HomeViewModel = hiltViewModel()
-                val cities = viewModel.cities.collectAsLazyPagingItems()
-                HomeScreen(
-                    cities = cities
-                )
-            }
+
+    NavHost(navController = navController, startDestination = Destination.HomeScreen.route) {
+        composable(Destination.HomeScreen.route) {
+            val viewModel: HomeViewModel = hiltViewModel()
+            val cities = viewModel.cities.collectAsLazyPagingItems()
+            HomeScreen(
+                modifier = modifier,
+                cities = cities
+            )
         }
     }
+
 }
