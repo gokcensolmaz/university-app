@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,7 +52,9 @@ fun CityExpandableCard(
             ),
         shape = Shapes.medium,
         onClick = {
-            expandedState = !expandedState
+            if (city.universities.isNotEmpty()) {
+                expandedState = !expandedState
+            }
         }
     ) {
         Column(
@@ -62,31 +65,35 @@ fun CityExpandableCard(
             Row(
                 modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    onClick = {
-                        expandedState = !expandedState
-                    }
-                ) {
-                    if (!expandedState) {
-                        Icon(
-                            imageVector =
-                            Icons.Default.Add, contentDescription = "Expand Row"
-                        )
-                    } else {
-                        Icon(
-                            imageVector =
-                            Icons.Default.Remove, contentDescription = "UnExpand Row"
-                        )
+                if (city.universities.isNotEmpty()) {
+                    IconButton(
+                        onClick = {
+                            expandedState = !expandedState
+                        }
+                    ) {
+                        if (!expandedState) {
+                            Icon(
+                                imageVector =
+                                Icons.Default.Add, contentDescription = "Expand Row"
+                            )
+                        } else {
+                            Icon(
+                                imageVector =
+                                Icons.Default.Remove, contentDescription = "UnExpand Row"
+                            )
+                        }
                     }
                 }
+
                 Text(
                     text = city.province,
                     style = Typography.labelSmall
                 )
             }
             if (expandedState) {
-
-                UniversityExpandableCard(university = city.universities[0], expanded = false)
+                    city.universities.forEach{university ->
+                        UniversityExpandableCard(university = university, expanded = false)
+                    }
 
 
             }
