@@ -8,26 +8,29 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UniversityTopAppBar(title: String) {
+fun UniversityTopAppBar(title: String, navigateToFavorite: () -> Unit, navigateUp: () -> Unit) {
     CenterAlignedTopAppBar(
         title = { Text(text = title) },
         navigationIcon = {
             if (title != "Üniversiteler") {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.ArrowBackIosNew, contentDescription = null )
+                IconButton(
+                    onClick = navigateUp
+                ) {
+                    Icon(imageVector = Icons.Default.ArrowBackIosNew, contentDescription = null)
                 }
             }
         },
         actions = {
             if (title == "Üniversiteler") {
-                IconButton(onClick = { /* do something */ }) {
+                IconButton(
+                    onClick = navigateToFavorite
+                ) {
                     Icon(
                         imageVector = Icons.Filled.Favorite,
                         contentDescription = null,
@@ -41,5 +44,5 @@ fun UniversityTopAppBar(title: String) {
 @Preview(showBackground = true)
 @Composable
 fun TopAppBarPrev() {
-    UniversityTopAppBar(title = "Üniversiteler")
+    // UniversityTopAppBar(title = "Üniversiteler")
 }

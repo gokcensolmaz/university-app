@@ -1,4 +1,4 @@
-package com.example.universityapp.presentation.home
+package com.example.universityapp.presentation.common.UniversityCard
 
 import com.example.universityapp.data.local.University
 
