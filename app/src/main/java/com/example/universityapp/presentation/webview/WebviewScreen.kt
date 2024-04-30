@@ -28,7 +28,8 @@ fun WebViewScreen(url: String) {
                             isLoading = false
                         }
                     }
-                    loadUrl(url)
+                        loadUrl(url)
+
                 }
             },
             modifier = Modifier.fillMaxSize()

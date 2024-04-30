@@ -9,5 +9,6 @@ object Constants {
     // Dimensions
 
     val SmallPadding = 12.dp
+    val MediumPadding = 25.dp
 
 }

@@ -80,10 +80,13 @@ fun Navigation(navigationHandler: NavigationHandler) {
                 val universityName =
                     navController.previousBackStackEntry?.savedStateHandle?.get<String>("universityName")
                         ?: "None"
-                val universityUrl =
+                var universityUrl =
                     navController.previousBackStackEntry?.savedStateHandle?.get<String>("universityUrl")
                         ?: "https://www.google.com"
                 topAppBarTitle = universityName
+                if(!(universityUrl.contains("https"))){
+                    universityUrl = "https://$universityUrl"
+                }
                 WebViewScreen(url = universityUrl)
             }
 

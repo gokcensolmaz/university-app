@@ -5,6 +5,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -16,21 +17,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.universityapp.domain.model.City
-import com.example.universityapp.data.local.University
-import com.example.universityapp.presentation.common.UniversityCard.AddRemoveFavoriteEvent
 import com.example.universityapp.presentation.common.UniversityCard.UniversityExpandableCard
 import com.example.universityapp.ui.theme.Shapes
 import com.example.universityapp.ui.theme.Typography
 import com.example.universityapp.util.Constants.EXPANSION_ANIMATION_DURATION
+import com.example.universityapp.util.Constants.MediumPadding
 import com.example.universityapp.util.Constants.SmallPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +60,10 @@ fun CityExpandableCard(
                 .padding(SmallPadding)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 45.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 if (city.universities.isNotEmpty()) {
                     IconButton(
@@ -84,12 +85,19 @@ fun CityExpandableCard(
                             )
                         }
                     }
+                    Text(
+                        text = city.province,
+                        style = Typography.labelSmall
+                    )
+                } else {
+                    Text(
+                        modifier = Modifier.padding(start = MediumPadding),
+                        text = city.province,
+                        style = Typography.labelSmall
+                    )
                 }
 
-                Text(
-                    text = city.province,
-                    style = Typography.labelSmall
-                )
+
             }
             if (expandedState) {
                 city.universities.forEach { university ->
