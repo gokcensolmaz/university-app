@@ -10,15 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.universityapp.domain.model.City
-import com.example.universityapp.presentation.common.CityExpandableCard
+import com.example.universityapp.presentation.common.CityExpandableCard.CityExpandableCard
 import com.example.universityapp.util.Constants.SmallPadding
 import retrofit2.HttpException
 
 @Composable
 fun HomeScreen(
     modifier: Modifier,
-    cities: LazyPagingItems<City>,
-    event : (AddRemoveFavoriteEvent) -> Unit
+    cities: LazyPagingItems<City>
 ) {
     Column(
         modifier = modifier
@@ -33,7 +32,7 @@ fun HomeScreen(
             ) {
                 items(count = cities.itemCount) {
                     cities[it]?.let { city ->
-                        CityExpandableCard(city = city, expanded = false,event = event)
+                        CityExpandableCard(city = city)
                     }
                 }
             }

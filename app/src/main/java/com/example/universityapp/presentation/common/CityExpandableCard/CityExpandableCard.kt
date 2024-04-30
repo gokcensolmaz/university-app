@@ -1,4 +1,4 @@
-package com.example.universityapp.presentation.common
+package com.example.universityapp.presentation.common.CityExpandableCard
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -16,15 +16,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.universityapp.domain.model.City
 import com.example.universityapp.data.local.University
-import com.example.universityapp.presentation.home.AddRemoveFavoriteEvent
+import com.example.universityapp.presentation.common.UniversityCard.AddRemoveFavoriteEvent
+import com.example.universityapp.presentation.common.UniversityCard.UniversityExpandableCard
 import com.example.universityapp.ui.theme.Shapes
 import com.example.universityapp.ui.theme.Typography
 import com.example.universityapp.util.Constants.EXPANSION_ANIMATION_DURATION
@@ -34,10 +35,9 @@ import com.example.universityapp.util.Constants.SmallPadding
 @Composable
 fun CityExpandableCard(
     city: City,
-    expanded: Boolean,
-    event: (AddRemoveFavoriteEvent) -> Unit
+    viewModel: CityCardViewModel = hiltViewModel()
 ) {
-    var expandedState by remember { mutableStateOf(expanded) }
+    val expandedState by rememberUpdatedState(newValue = viewModel.isCityExpanded(city.id))
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +50,7 @@ fun CityExpandableCard(
         shape = Shapes.medium,
         onClick = {
             if (city.universities.isNotEmpty()) {
-                expandedState = !expandedState
+                viewModel.toggleCityExpanded(city.id)
             }
         }
     ) {
@@ -65,7 +65,9 @@ fun CityExpandableCard(
                 if (city.universities.isNotEmpty()) {
                     IconButton(
                         onClick = {
-                            expandedState = !expandedState
+                            if (city.universities.isNotEmpty()) {
+                                viewModel.toggleCityExpanded(city.id)
+                            }
                         }
                     ) {
                         if (!expandedState) {
@@ -90,10 +92,8 @@ fun CityExpandableCard(
             if (expandedState) {
                 city.universities.forEach { university ->
                     UniversityExpandableCard(
-                        university = university,
-                        expanded = false,
-                        onFavoriteClick = {event(AddRemoveFavoriteEvent.UpsertDeleteUniversity(university = university))}
-                        )
+                        university = university
+                    )
                 }
             }
         }
@@ -119,7 +119,6 @@ fun CityExpandableRowPreview() {
                     rector = "MEHMET TÜMAY"
                 )
             )
-        ),
-        expanded = false
-    ){}
+        )
+    )
 }

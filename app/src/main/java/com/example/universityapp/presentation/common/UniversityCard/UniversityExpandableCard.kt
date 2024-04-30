@@ -1,4 +1,4 @@
-package com.example.universityapp.presentation.common
+package com.example.universityapp.presentation.common.UniversityCard
 
 import android.content.Intent
 import android.net.Uri
@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +42,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.universityapp.domain.model.ContactInfo
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.universityapp.data.local.University
+import com.example.universityapp.domain.model.ContactInfo
 import com.example.universityapp.ui.theme.Shapes
 import com.example.universityapp.ui.theme.Typography
 import com.example.universityapp.util.Constants
@@ -51,14 +54,12 @@ import com.example.universityapp.util.Constants.SmallPadding
 @Composable
 fun UniversityExpandableCard(
     university: University,
-    expanded: Boolean,
-    onFavoriteClick: (University) -> Unit
+    viewModel: UniversityViewModel = hiltViewModel()
 ) {
-    var expandedState by remember { mutableStateOf(expanded) }
+    val expandedState by rememberUpdatedState(newValue = viewModel.isUniversityExpanded(university.name))
     val hasInformation = hasInformation(university)
-    var favoriteState by remember {
-        mutableStateOf(false)
-    }
+    val favoriteState by rememberUpdatedState(newValue = viewModel.isUniversityFavorite(university))
+
 
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -69,7 +70,7 @@ fun UniversityExpandableCard(
             )
         ), shape = Shapes.medium, onClick = {
         if (hasInformation) {
-            expandedState = !expandedState
+            viewModel.toggleUniversityExpanded(university.name)
         }
     }) {
         Column(
@@ -86,7 +87,7 @@ fun UniversityExpandableCard(
                 ) {
                     if (hasInformation) {
                         IconButton(onClick = {
-                            expandedState = !expandedState
+                            viewModel.toggleUniversityExpanded(university.name)
                         }) {
                             if (!expandedState) {
                                 Icon(
@@ -110,7 +111,7 @@ fun UniversityExpandableCard(
 
                 }
                 IconButton(onClick = {
-                    onFavoriteClick(university)
+                   viewModel.onEvent(AddRemoveFavoriteEvent.UpsertDeleteUniversity(university))
                 }) {
                     if (favoriteState) {
                         Icon(
@@ -131,7 +132,7 @@ fun UniversityExpandableCard(
                         .fillMaxWidth()
                         .padding(start = 48.dp)
                         .clip(Shapes.medium)
-                        .background(Color.Gray),
+                        .background(Color.LightGray),
 
                     ) {
 
@@ -154,6 +155,16 @@ fun UniversityExpandableCard(
                                         )
                                     }
 
+                                    "Website" -> Row() {
+                                        HyperlinkText(
+                                            text = "${element.label}: ${element.value}",
+                                            hyperlinkText = element.value,
+                                            onClick = {
+
+                                            }
+
+                                        )
+                                    }
 
                                     "Email" -> Row() {
                                         HyperlinkText(
@@ -173,9 +184,18 @@ fun UniversityExpandableCard(
                                         Text("${element.label}: ${element.value}")
                                     }
                                 }
+                                if (element.label != "Rector") {
+                                    Divider(
+                                        color = Color.Gray,
+                                        thickness = 1.dp,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .align(Alignment.CenterHorizontally)
+                                            .padding(vertical = 5.dp)
+                                    )
+                                }
                             }
                         }
-
                     }
                 }
             }
@@ -195,7 +215,7 @@ fun HyperlinkText(text: String, hyperlinkText: String, onClick: () -> Unit) {
         append(str)
         addStyle(
             style = SpanStyle(
-                color = Color(0xff64B5F6),
+                color = Color(0xff000080),
                 textDecoration = TextDecoration.Underline
             ), start = startIndex, end = endIndex
         )
@@ -242,7 +262,6 @@ fun uniCardPrev() {
             email = "rektorluk@adanabtu.edu.tr",
             adress = "Gültepe Mahallesi, Çatalan Caddesi No:201/5 01250 Sarıçam/ADANA",
             rector = "MEHMET TÜMAY"
-        ), expanded = false
-    ) {
-    }
+        )
+    )
 }

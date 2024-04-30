@@ -21,33 +21,4 @@ class HomeViewModel @Inject constructor(
     var sideEffect by mutableStateOf<String?>(null)
         private set
 
-    fun onEvent(event: AddRemoveFavoriteEvent) {
-        when (event) {
-            is AddRemoveFavoriteEvent.UpsertDeleteUniversity -> {
-                viewModelScope.launch {
-                    val university = universityAppUseCases.getUniversity(event.university.name)
-                    if (university == null) {
-                        upsertUniversity(event.university)
-
-                    } else {
-                        deleteUniversity(event.university)
-                    }
-                }
-            }
-
-            is AddRemoveFavoriteEvent.RemoveSideEffect -> {
-                sideEffect = null
-            }
-        }
-    }
-
-    private suspend fun upsertUniversity(university: University) {
-        universityAppUseCases.upsertUniversity(university = university)
-        sideEffect = "University Saved"
-    }
-
-    private suspend fun deleteUniversity(university: University) {
-        universityAppUseCases.deleteUniversity(university = university)
-        sideEffect = "University Deleted"
-    }
 }
