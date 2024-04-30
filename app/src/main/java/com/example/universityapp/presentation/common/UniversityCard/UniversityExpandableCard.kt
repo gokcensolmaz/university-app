@@ -1,7 +1,9 @@
 package com.example.universityapp.presentation.common.UniversityCard
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -27,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.universityapp.data.local.University
 import com.example.universityapp.domain.model.ContactInfo
+import com.example.universityapp.presentation.navigation.NavigationHandler
+import com.example.universityapp.presentation.navigation.NavigationManager
 import com.example.universityapp.ui.theme.Shapes
 import com.example.universityapp.ui.theme.Typography
 import com.example.universityapp.util.Constants
@@ -111,7 +116,7 @@ fun UniversityExpandableCard(
 
                 }
                 IconButton(onClick = {
-                   viewModel.onEvent(AddRemoveFavoriteEvent.UpsertDeleteUniversity(university))
+                    viewModel.onEvent(AddRemoveFavoriteEvent.UpsertDeleteUniversity(university))
                 }) {
                     if (favoriteState) {
                         Icon(
@@ -138,6 +143,7 @@ fun UniversityExpandableCard(
 
                     Column(modifier = Modifier.padding(SmallPadding)) {
                         var contactInfoList = getUniversityInformation(university)
+
                         contactInfoList.forEach { element ->
                             if (element.value != "-") {
                                 when (element.label) {
@@ -160,9 +166,8 @@ fun UniversityExpandableCard(
                                             text = "${element.label}: ${element.value}",
                                             hyperlinkText = element.value,
                                             onClick = {
-
+                                                NavigationManager.navigateToWebView(university)
                                             }
-
                                         )
                                     }
 
@@ -250,7 +255,7 @@ fun getUniversityInformation(university: University): List<ContactInfo> {
     )
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun uniCardPrev() {
     UniversityExpandableCard(
@@ -263,5 +268,5 @@ fun uniCardPrev() {
             adress = "Gültepe Mahallesi, Çatalan Caddesi No:201/5 01250 Sarıçam/ADANA",
             rector = "MEHMET TÜMAY"
         )
-    )
-}
+    ){}
+}*/

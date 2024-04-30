@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.universityapp.domain.model.City
 import com.example.universityapp.data.local.University
 import com.example.universityapp.presentation.common.UniversityCard.AddRemoveFavoriteEvent
@@ -100,7 +102,7 @@ fun CityExpandableCard(
     }
 }
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun CityExpandableRowPreview() {
@@ -121,4 +123,4 @@ fun CityExpandableRowPreview() {
             )
         )
     )
-}
+}*/

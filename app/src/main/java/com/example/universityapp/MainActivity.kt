@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.universityapp.presentation.common.UniversityTopAppBar
 import com.example.universityapp.presentation.navigation.Destination
 import com.example.universityapp.presentation.navigation.Navigation
+import com.example.universityapp.presentation.navigation.NavigationHandler
 import com.example.universityapp.ui.theme.UniversityappTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +25,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             UniversityappTheme {
-                Navigation()
+                val navController = rememberNavController()
+                Navigation(navigationHandler = NavigationHandler(navController))
             }
         }
     }

@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -18,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.universityapp.data.local.University
+import com.example.universityapp.presentation.common.UniversityCard.UniversityViewModel
 import com.example.universityapp.presentation.common.UniversityTopAppBar
 import com.example.universityapp.presentation.favorite.FavoriteScreen
 import com.example.universityapp.presentation.favorite.FavoriteViewModel
@@ -27,10 +30,13 @@ import com.example.universityapp.presentation.webview.WebViewScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Navigation() {
+fun Navigation(navigationHandler: NavigationHandler) {
     val navController = rememberNavController()
+    LaunchedEffect(Unit) {
+        navigationHandler.setNavController(navController)
+        NavigationManager.navController = navController
+    }
     val backstackState = navController.currentBackStackEntryAsState().value
-    // TODO: Top bar title
     var topAppBarTitle by remember { mutableStateOf("Üniversiteler") }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -38,8 +44,7 @@ fun Navigation() {
             UniversityTopAppBar(
                 title = topAppBarTitle,
                 navigateToFavorite = {
-                    navigateToFavorite(
-                        navController = navController,
+                    navigationHandler.navigateToFavorite(
                         route = Destination.FavoriteScreen.route
                     )
                 },
@@ -67,36 +72,23 @@ fun Navigation() {
                 val state = viewModel.state.value
                 topAppBarTitle = "Favorilerim"
                 FavoriteScreen(
-                    state = state
+                    state = state,
+                    navController = navController
                 )
             }
             composable(Destination.WebViewScreen.route) {
-                navController.previousBackStackEntry?.savedStateHandle?.get<University?>("university")
-                    ?.let { university ->
-                        WebViewScreen(
-                            url = university.website
-                        )
-                    }
+                val universityName =
+                    navController.previousBackStackEntry?.savedStateHandle?.get<String>("universityName")
+                        ?: "None"
+                val universityUrl =
+                    navController.previousBackStackEntry?.savedStateHandle?.get<String>("universityUrl")
+                        ?: "https://www.google.com"
+                topAppBarTitle = universityName
+                WebViewScreen(url = universityUrl)
             }
-        }
-    }
 
 
-}
-
-private fun navigateToFavorite(navController: NavController, route: String) {
-    navController.navigate(route) {
-        navController.graph.startDestinationRoute?.let { homeScreen ->
-            popUpTo(homeScreen) {
-                saveState = true
-            }
-            restoreState = true
-            launchSingleTop = true
         }
     }
 }
 
-fun navigateToWebView(navController: NavController, university: University) {
-    navController.currentBackStackEntry?.savedStateHandle?.set("university", university)
-    navController.navigate(Destination.WebViewScreen.route)
-}

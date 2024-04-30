@@ -1,12 +1,25 @@
 package com.example.universityapp.presentation.common.UniversityCard
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
+import androidx.navigation.compose.rememberNavController
+import com.example.universityapp.MainActivity
 import com.example.universityapp.data.local.University
 import com.example.universityapp.domain.usecases.UniversityAppUseCases
+import com.example.universityapp.presentation.navigation.Destination
+import com.example.universityapp.presentation.navigation.Navigation
+import com.example.universityapp.presentation.webview.WebViewScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -71,5 +84,8 @@ class UniversityViewModel @Inject constructor(
             _favoriteUniversities.value = _favoriteUniversities.value.copy(universities = it.asReversed())
         }.launchIn(viewModelScope)
     }
+
+
+
 }
 
