@@ -72,8 +72,7 @@ fun Navigation(navigationHandler: NavigationHandler) {
                 val state = viewModel.state.value
                 topAppBarTitle = "Favorilerim"
                 FavoriteScreen(
-                    state = state,
-                    navController = navController
+                    state = state
                 )
             }
             composable(Destination.WebViewScreen.route) {

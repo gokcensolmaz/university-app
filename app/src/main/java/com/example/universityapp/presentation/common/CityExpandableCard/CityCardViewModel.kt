@@ -9,9 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CityCardViewModel @Inject constructor(
-    private val universityAppUseCases: UniversityAppUseCases
-):ViewModel() {
+class CityCardViewModel @Inject constructor() : ViewModel() {
     private val _expandedCities = mutableStateOf(mapOf<Int, Boolean>())
 
     fun toggleCityExpanded(cityId: Int) {
@@ -23,4 +21,11 @@ class CityCardViewModel @Inject constructor(
 
     fun isCityExpanded(cityId: Int): Boolean = _expandedCities.value[cityId] ?: false
 
+    fun collapseAllCities() {
+        val currentStates = _expandedCities.value.toMutableMap()
+        currentStates.keys.forEach { key ->
+            currentStates[key] = false
+        }
+        _expandedCities.value = currentStates
+    }
 }

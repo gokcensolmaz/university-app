@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.universityapp.presentation.common.EmptyScreen
 import com.example.universityapp.presentation.common.UniversityCard.FavoriteState
 import com.example.universityapp.presentation.common.UniversityCard.UniversityExpandableCard
 import com.example.universityapp.util.Constants
@@ -22,20 +23,24 @@ import com.example.universityapp.util.Constants.SmallPadding
 
 @Composable
 fun FavoriteScreen(
-    state: FavoriteState,
-    navController: NavHostController
+    state: FavoriteState
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(SmallPadding)
-    ) {
-        items(state.universities) { university ->
-            UniversityExpandableCard(
-                university = university
-            )
-            Spacer(modifier = Modifier.height(SmallPadding))
+    if (state.universities.isNotEmpty()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(SmallPadding)
+        ) {
+            items(state.universities) { university ->
+                UniversityExpandableCard(
+                    university = university
+                )
+                Spacer(modifier = Modifier.height(SmallPadding))
+            }
         }
+    }else{
+        EmptyScreen()
     }
+
 
 }
