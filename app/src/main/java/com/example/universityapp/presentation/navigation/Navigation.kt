@@ -11,16 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.universityapp.data.local.University
-import com.example.universityapp.presentation.common.UniversityCard.UniversityViewModel
 import com.example.universityapp.presentation.common.UniversityTopAppBar
 import com.example.universityapp.presentation.favorite.FavoriteScreen
 import com.example.universityapp.presentation.favorite.FavoriteViewModel
@@ -59,6 +55,7 @@ fun Navigation(navigationHandler: NavigationHandler) {
             navController = navController,
             startDestination = Destination.HomeScreen.route
         ) {
+
             composable(Destination.HomeScreen.route) {
                 val viewModel: HomeViewModel = hiltViewModel()
                 topAppBarTitle = "Üniversiteler"
@@ -83,7 +80,7 @@ fun Navigation(navigationHandler: NavigationHandler) {
                     navController.previousBackStackEntry?.savedStateHandle?.get<String>("universityUrl")
                         ?: "https://www.google.com"
                 topAppBarTitle = universityName
-                if(!(universityUrl.contains("https"))){
+                if (!(universityUrl.contains("https"))) {
                     universityUrl = "https://$universityUrl"
                 }
                 WebViewScreen(url = universityUrl)
