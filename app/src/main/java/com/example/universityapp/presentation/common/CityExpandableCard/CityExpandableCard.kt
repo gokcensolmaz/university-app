@@ -3,6 +3,9 @@ package com.example.universityapp.presentation.common.CityExpandableCard
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
@@ -21,6 +24,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.universityapp.domain.model.City
@@ -38,7 +43,7 @@ fun CityExpandableCard(
     viewModel: CityCardViewModel = hiltViewModel()
 ) {
     val expandedState by rememberUpdatedState(newValue = viewModel.isCityExpanded(city.id))
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(
@@ -46,13 +51,14 @@ fun CityExpandableCard(
                     durationMillis = EXPANSION_ANIMATION_DURATION,
                     easing = LinearOutSlowInEasing
                 )
-            ),
-        shape = Shapes.medium,
-        onClick = {
-            if (city.universities.isNotEmpty()) {
-                viewModel.toggleCityExpanded(city.id)
-            }
-        }
+            )
+            .clip(Shapes.medium)
+            .background(Color.LightGray)
+            .clickable {
+                if (city.universities.isNotEmpty()) {
+                    viewModel.toggleCityExpanded(city.id)
+                }
+            },
     ) {
         Column(
             modifier = Modifier

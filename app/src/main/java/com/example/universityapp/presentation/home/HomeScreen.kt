@@ -17,6 +17,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.universityapp.domain.model.City
 import com.example.universityapp.presentation.common.CityExpandableCard.CityExpandableCard
 import com.example.universityapp.presentation.common.CollapseAllButton
+import com.example.universityapp.presentation.common.ErrorScreen
 import com.example.universityapp.util.Constants.SmallPadding
 import retrofit2.HttpException
 
@@ -24,7 +25,7 @@ import retrofit2.HttpException
 fun HomeScreen(
     cities: LazyPagingItems<City>
 ) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd){
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -61,24 +62,16 @@ fun handlePagingResult(cities: LazyPagingItems<City>): Boolean {
 
     return when {
         loadState.refresh is LoadState.Loading -> {
-            // ShimmerEffect()
             false
         }
 
         error != null -> {
-            if (error.error is HttpException) {
-                //EmptyScreen(message = stringResource(R.string.search_no_query)) // Search Query is ""
-            } else {
-
-                // EmptyScreen()
-            }
-
-
+            ErrorScreen()
             false
         }
 
         cities.itemCount == 0 -> {
-            //EmptyScreen(message = stringResource(R.string.empty_search_list)) // Search event returns empty
+            ErrorScreen()
             false
         }
 

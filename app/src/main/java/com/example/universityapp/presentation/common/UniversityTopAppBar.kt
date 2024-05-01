@@ -25,7 +25,8 @@ fun UniversityTopAppBar(title: String, navigateToFavorite: () -> Unit, navigateU
                 modifier = Modifier.padding(SmallPadding),
                 text = title,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = Color.DarkGray
             )
         },
         navigationIcon = {

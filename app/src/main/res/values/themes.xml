@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.Universityapp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.CustomSplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/applogo</item>
+        <item name="postSplashScreenTheme">@style/Theme.Universityapp</item>
+
+    </style>
 </resources>

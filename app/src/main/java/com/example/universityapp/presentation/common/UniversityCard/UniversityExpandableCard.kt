@@ -66,18 +66,20 @@ fun UniversityExpandableCard(
     val favoriteState by rememberUpdatedState(newValue = viewModel.isUniversityFavorite(university))
 
 
-    Card(modifier = Modifier
+    Box(modifier = Modifier
         .fillMaxWidth()
         .animateContentSize(
             animationSpec = tween(
                 durationMillis = Constants.EXPANSION_ANIMATION_DURATION,
                 easing = LinearOutSlowInEasing
             )
-        ), shape = Shapes.medium, onClick = {
-        if (hasInformation) {
-            viewModel.toggleUniversityExpanded(university.name)
-        }
-    }) {
+        )
+        .clip(Shapes.medium).background(Color.LightGray)
+        .clickable {
+            if (hasInformation) {
+                viewModel.toggleUniversityExpanded(university.name)
+            }
+        }) {
         Column(
             modifier = Modifier.padding(SmallPadding)
         ) {

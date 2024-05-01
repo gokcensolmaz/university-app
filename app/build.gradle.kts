@@ -72,7 +72,6 @@ dependencies {
 
     //Splash Screen
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
